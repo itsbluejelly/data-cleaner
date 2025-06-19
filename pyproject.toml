@@ -1,0 +1,18 @@
+[project]
+name = "data-cleaner"
+version = "0.1.0"
+description = "A package to help format and manage your data files"
+authors = [
+    {name = "itsbluejelly",email = "ronniedenzel0@gmail.com"}
+]
+license = {text = "MIT"}
+requires-python = ">=3.12"
+dependencies = [
+]
+
+[project.readme]
+file = "README.md"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

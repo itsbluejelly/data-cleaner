@@ -1,13 +1,12 @@
 from typing import Literal, List
 
-# A type for the supported column value in the csv file
+# A type for the supported column value in the file
 type SupportedValueType = Literal[
     "string",
     "int",
     "float",
     "boolean",
     "date",
-    "track",
     "name",
     "email",
     "password",
@@ -28,7 +27,6 @@ SUPPORTED_TYPES: List[SupportedValueType] = [
     "name",
     "password",
     "string",
-    "track",
     "username",
     "uuid",
 ]

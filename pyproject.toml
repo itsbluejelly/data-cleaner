@@ -7,11 +7,11 @@ authors = [
 ]
 license = {text = "MIT"}
 requires-python = ">=3.12"
+readme = "README.md"
 dependencies = [
+    "faker (>=37.4.0,<38.0.0)",
+    "pydantic (>=2.11.7,<3.0.0)"
 ]
-
-[project.readme]
-file = "README.md"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

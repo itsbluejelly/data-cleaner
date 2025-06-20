@@ -1,4 +1,4 @@
-from schema import SupportedValueType, SUPPORTED_TYPES
+from schema import SupportedValueType, SUPPORTED_VALUE_TYPES
 from faker import Faker
 from typing import Dict, TypedDict, NotRequired, List
 import random
@@ -74,7 +74,7 @@ def generate_fake_headers(
             while key in config_headers:
                 key = fake_generator.word()
 
-            value = random.choice(SUPPORTED_TYPES)
+            value = random.choice(SUPPORTED_VALUE_TYPES)
 
             # Add the value type, and regulate the loop
             config_headers[key] = value

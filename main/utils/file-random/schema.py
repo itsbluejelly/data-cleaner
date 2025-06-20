@@ -17,7 +17,7 @@ type SupportedValueType = Literal[
 
 # A value that holds all the constants for the types of column values
 # supported in the application
-SUPPORTED_TYPES: List[SupportedValueType] = [
+SUPPORTED_VALUE_TYPES: List[SupportedValueType] = [
     "boolean",
     "color",
     "date",

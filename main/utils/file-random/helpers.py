@@ -182,3 +182,6 @@ def generate_fake_rows(
         config_rows.extend(new_rows)
 
     return config_rows
+
+
+generate_fake_value("boolean", {})

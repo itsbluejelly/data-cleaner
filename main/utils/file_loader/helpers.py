@@ -1,5 +1,5 @@
 import pandas as pd
-from schema import SUPPORTED_FILE_TYPES, SupportedFileType
+from .schema import SUPPORTED_FILE_TYPES, SupportedFileType
 from pathlib import Path
 from typing import List, Sequence, Mapping, Literal, TypedDict, NotRequired
 

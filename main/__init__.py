@@ -1,7 +1,4 @@
-"""
-This package is meant to help interact with the data files of your choice.
-
-Currently the only supported files are:
-1. __.csv__: For comma-separated values or other delimiters
-2. __.text__: For normal text files
+"""This here is the main package for the actual data cleaner, it exposes the following:
+        1. The utils folder, for utility functions
+        2. The classes folder, for classes relating to the package
 """

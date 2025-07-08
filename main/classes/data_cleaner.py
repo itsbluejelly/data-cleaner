@@ -1,10 +1,10 @@
-from utils.file_random.helpers import (
+from main.utils.file_random.helpers import (
     generate_fake_headers,
     generate_fake_value,
     generate_fake_rows,
     ConfigType as OGFileRandomConfig,
 )
-from utils.file_random.schema import SupportedValueType
+from main.utils.file_random.schema import SupportedValueType
 import random
 from typing import Dict, NotRequired, TypedDict, List
 
@@ -154,6 +154,4 @@ class DataCleaner:
             cls.get_file_random_config(value_config),
         )
 
-if __name__ == "__main__":
-    headers = DataCleaner.generate_fake_headers()
-    print(DataCleaner.generate_fake_rows(headers))
+    

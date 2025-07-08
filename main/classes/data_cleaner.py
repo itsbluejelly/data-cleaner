@@ -2,15 +2,20 @@ from main.utils.file_random.helpers import (
     generate_fake_headers,
     generate_fake_value,
     generate_fake_rows,
-    ConfigType as OGFileRandomConfig,
+    ConfigType as OGFileRandomConfigType,
 )
 from main.utils.file_random.schema import SupportedValueType
 import random
-from typing import Dict, NotRequired, TypedDict, List
+from typing import Dict, NotRequired, TypedDict, List, Sequence, Mapping, Literal
+from main.utils.file_loader.helpers import (
+    load_file,
+    LoadFileConfigParamType as OGLoadFileConfigParamType,
+)
+from .data_class import DataClass
 
 
 class FileRandomConfigType(TypedDict):
-    """A type for the `config` param in the `generate_fake_value` function.
+    """A type for the `config` param in the helper random file functions.
 
     **NB:** All properties are optional
 
@@ -33,12 +38,50 @@ class FileRandomConfigType(TypedDict):
     max_int: NotRequired[int]
 
 
+class LoadFileConfigParamType(TypedDict):
+    """A type for the `config` param in the helper loader file functions.
+
+    **NB:** All properties are optional
+
+    Properties:
+        1.`orient`:
+        How to organize the data when serializing a DataFrame to JSON.
+        Default: "records"
+
+        2.`delimiter` (str | None):
+        The delimiter to use when reading CSV or text files.
+        Default: ","
+
+        3.`parse_dates`:
+        A list of columns or a map of columns from which the date-values are converted to valid datetime strings
+    """
+
+    orient: NotRequired[
+        Literal["records", "split", "index", "columns", "values", "table"]
+    ]
+
+    parse_dates: NotRequired[
+        List[str]
+        | List[int]
+        | Sequence[Sequence[int]]
+        | Mapping[str, Sequence[int | str]]
+    ]
+
+    delimiter: NotRequired[str]
+
+
 class DataCleaner:
-    # Default config for the file random utils
-    DEFAULT_FILE_RANDOM_CONFIG: OGFileRandomConfig = {
+    # Default configs
+    DEFAULT_FILE_RANDOM_CONFIG: OGFileRandomConfigType = {
         "decimal_places": 3,
         "max_int": 10_000,
         "min_int": 0,
+    }
+
+    DEFAULT_LOAD_FILE_PARAM_CONFIG: OGLoadFileConfigParamType = {
+        "delimiter": ",",
+        "orient": "records",
+        "parse_dates": [],
     }
 
     @staticmethod
@@ -78,8 +121,8 @@ class DataCleaner:
     def get_file_random_config(
         cls,
         config: FileRandomConfigType | None = None,
-    ) -> OGFileRandomConfig:
-        """A helper function to convert an optional config an prepare defaults for missing properties. If the whole config's properties are given then it returns it as is, effectively preserving it
+    ) -> OGFileRandomConfigType:
+        """A function to convert an optional config an prepare defaults for missing properties. If the whole config's properties are given then it returns it as is, effectively preserving it
 
         Args:
             config (FileRandomConfigType | None, optional):
@@ -103,7 +146,7 @@ class DataCleaner:
                 The type of value to generate, which should be validly supported
                 in the app
             2. `config` (FileRandomConfigType | None, optional):
-                The config which controls some aspect of random value generation. Defaults to None.
+                The config which controls some aspect of random value generation. Defaults to `DEFAULT_FILE_RANDOM_CONFIG`.
 
         Returns:
             The random value, which is based on the params given
@@ -137,7 +180,7 @@ class DataCleaner:
             between 1-5 inclusive
             4. `value_config` (ConfigType | None, optional):
             The config which controls some aspect of random value generation for
-            each column in the row.
+            each column in the row. Defaults to `DEFAULT_FILE_RANDOM_CONFIG`
 
         Returns:
             A list of all the randomly generated rows, while still abiding by the
@@ -154,4 +197,26 @@ class DataCleaner:
             cls.get_file_random_config(value_config),
         )
 
-    
+    @classmethod
+    def load_file(
+        cls, path: str, config: LoadFileConfigParamType | None = None
+    ) -> DataClass:
+        """A function that helps load data from a supported file to a data class instance.
+
+        Args:
+            path (str): The file path to read data from
+            config (LoadFileConfigParamType | None, optional): The config to use to customize the loaded data. Defaults to `DEFAULT_LOAD_FILE_PARAM_CONFIG`.
+
+        Returns:
+            DataClass: The data class instance, with all data-level APIs and properties
+        """
+        default_config: OGLoadFileConfigParamType = {
+            **cls.DEFAULT_LOAD_FILE_PARAM_CONFIG,
+            **(config or {}),
+        }
+
+        data = load_file(path, default_config)
+
+        return DataClass(data)
+
+data_cleaner = DataCleaner()
